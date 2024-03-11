@@ -1,5 +1,6 @@
 ﻿using IssueAppAPI.Models;
 using IssueAppAPI.Services;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IssueAppAPI.Controllers
@@ -34,6 +35,7 @@ namespace IssueAppAPI.Controllers
         }
 
         [HttpPost]
+        [EnableCors("_myAllowSpecificOrigins")]
         public IActionResult Post(UpdatedIssue i)
         {
             var issue = _issueService.AddIssue(i);

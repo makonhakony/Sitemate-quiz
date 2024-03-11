@@ -2,3 +2,13 @@
 <ul>
   <li *ngFor="let issue of issues">{{ issue.title }}: {{ issue.description }}</li>
 </ul>
+
+<form (ngSubmit)="submitIssue()">
+    <label for="title">Title:</label>
+    <input type="text" id="title" [(ngModel)]="issueTitle" name="title" required>
+  
+    <label for="description">Description:</label>
+    <textarea id="description" [(ngModel)]="issueDescription" name="description" required></textarea>
+  
+    <button type="submit">Submit Issue</button>
+</form>
