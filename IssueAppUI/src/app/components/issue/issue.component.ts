@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IssueService } from '../../services/issue.service';
+import { Issue } from '../../models/Issue';
 
 @Component({
   selector: 'app-issue',
@@ -8,33 +9,75 @@ import { IssueService } from '../../services/issue.service';
 })
 export class IssueComponent implements OnInit {
   issues: any[] = [];
-  issueTitle: string = '';
-  issueDescription: string = '';
+  issueTitle: string = ''
+  issueDescription: string = ''
+  issueID: string = ''
 
   constructor(private issueService: IssueService) {}
 
   ngOnInit() {
-    this.issueService.getIssue().subscribe((response : any) => {
-      this.issues = response; // Assuming your API response is an array of issues
-    });
+    this.loadIssue()
+  }
+
+  loadIssue(){
+    this.issueService.getIssue().subscribe(
+      (response : any) => {
+        this.issues = response; 
+      }
+    );
   }
 
   submitIssue() {
-    const issueData = {
+    const issueData : Issue = {
       title: this.issueTitle,
       description: this.issueDescription,
     };
 
-    // Call your API service to create the issue item
     this.issueService.createIssue(issueData).subscribe(
       (response) => {
         console.log('Issue created successfully:', response);
-        // Handle success (e.g., show a success message)
+        this.loadIssue()
       },
       (error) => {
         console.error('Error creating issue:', error);
-        // Handle error (e.g., show an error message)
       }
     );
+  }
+
+  displayTitle : string = ''
+  displayDescription : string = ''
+
+  searchIssue(){
+    this.issueService.getIssueId(this.issueID).subscribe(
+      (response: Issue) => {
+        this.displayTitle = response.title
+        this.displayDescription = response.description
+      }
+    )
+  }
+
+  deleteIssue(del_id: string){
+    this.issueService.deleteIssue(del_id).subscribe(
+      (response: Issue) => {
+        console.log(response)
+        this.loadIssue()
+      }
+
+    )
+  }
+  uissueID: string =''
+  uissueTitle: string =''
+  uissueDescription: string =''
+  updateIssue(){
+    const issueData : Issue = {
+      title: this.uissueTitle,
+      description: this.uissueDescription,
+    };
+    this.issueService.updateIssue(this.uissueID, issueData).subscribe(
+      (response) => {
+        console.log(response)
+        this.loadIssue()
+      }
+      )
   }
 }

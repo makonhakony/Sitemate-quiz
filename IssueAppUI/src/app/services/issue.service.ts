@@ -14,7 +14,19 @@ export class IssueService {
     return this.httpClient.get(`${this.server}/Issue`)
   }
 
+  getIssueId(Id: string): Observable<any>{
+    return this.httpClient.get(`${this.server}/Issue/${Id}`)
+  }
+
   createIssue(data: Issue): Observable<any>{
     return this.httpClient.post(`${this.server}/Issue`, data)
+  }
+
+  updateIssue(id: string, data: Issue): Observable<any>{
+    return this.httpClient.put(`${this.server}/Issue/${id}`, data)
+  }
+
+  deleteIssue(id: string): Observable<any>{
+    return this.httpClient.delete(`${this.server}/Issue/${id}`)
   }
 }
